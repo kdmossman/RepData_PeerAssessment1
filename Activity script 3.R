@@ -1,31 +1,15 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+## Week 2 Reproducible Research Project
 
-
-## Loading and preprocessing the data
-First let's load the libraries we need
-```{r}
 ## Load libraries
 library(tidyverse)
 library(lubridate)
 library(lattice)
-```
 
-Now let's read in the data file and convert it to a convenient TBL
-```{r}
 ## Read in data file
 activity <- read.csv("activity.csv")
 ## Convert to tibble
 activity.tbl <- as_tibble(activity)
-```
 
-
-## What is mean total number of steps taken per day?
-```{r}
 ## Plot histogram of steps taken in a given day
 stepsDay <- activity.tbl %>%
         group_by(date) %>%
@@ -35,17 +19,8 @@ h <- hist(stepsDay$steps, breaks = 20)
 
 ## Calculate mean, median of steps per day, over given time period
 meanSteps <- mean(stepsDay$steps, na.rm=TRUE)
-print("The mean number of steps per day is:") 
-meanSteps
-
 medianSteps <- median(stepsDay$steps, na.rm=TRUE)
-print("The median number of steps per day is:") 
-medianSteps
-```
 
-
-## What is the average daily activity pattern?
-```{r}
 ## Time series plot of the average number of steps taken
 ## Remove rows with NA values 
 stepsDay <- stepsDay[complete.cases(stepsDay),] ## actually not necessary
@@ -63,12 +38,7 @@ maxInterval <- intervalMeans[which.max(intervalMeans$intervalMean),] ## Max row
 plot(intervalMeans$interval, intervalMeans$intervalMean, xlab="5-Min Interval",
      ylab="Steps Per Interval")
 maxRow <- as.integer(maxInterval[1,1]) ## Number of max row
-print("The interval with maximum number of steps is:")
-maxRow
-```
 
-## Imputing missing values
-```{r}
 ## Imputing missing values: if "steps" missing for an interval, replace NA with
 ## mean value of steps for that interval over the whole dataset
 
@@ -99,15 +69,9 @@ h <- hist(stepsDayImputed$steps, breaks = 20)
 ## Calculate mean, median of steps per day including imputed data
 ## Calculate mean, median of steps per day, over given time period
 meanStepsImputed <- mean(stepsDayImputed$steps, na.rm=TRUE)
-print("The mean steps per day from imputed dataset is:")
-meanStepsImputed
 medianStepsImputed <- median(stepsDayImputed$steps, na.rm=TRUE)
-print("The median steps per day from imputed dataset is:")
-medianStepsImputed
-```
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
 ## Add factor variable with two values: "weekday" and "weekend"
 dayStatus <- vector(mode = "character", length = lengthData)
 for (i in 1:lengthData){
@@ -130,4 +94,3 @@ intervalMeansDay <- activeImputeDay %>%
 ## Produce lattice plot to compare activity on weekdays & weekends
 xyplot(stepsMeanDay ~ interval | dayStatus, data = intervalMeansDay, 
        layout = c(1, 2), xlab = "Interval", ylab="Mean Steps Per Interval")
-```
