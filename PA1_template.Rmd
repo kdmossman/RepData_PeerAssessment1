@@ -50,7 +50,8 @@ medianSteps
 ## Remove rows with NA values 
 stepsDay <- stepsDay[complete.cases(stepsDay),] ## actually not necessary
 ## Create plot
-plot(as.Date(stepsDay$date), stepsDay$steps, xlab = "Date", ylab = "Daily Steps")
+plot(as.Date(stepsDay$date), stepsDay$steps, xlab = "Date", ylab = "Daily Steps",
+     type="l")
 
 ## The 5-minute interval that, on average, contains the maximum number of steps
 ## Group by "interval" and calculate mean steps for each interval
@@ -61,7 +62,7 @@ intervalMeans <- activity.tbl %>%
 maxInterval <- intervalMeans[which.max(intervalMeans$intervalMean),] ## Max row
 ## Plot steps vs interval for visual inspection
 plot(intervalMeans$interval, intervalMeans$intervalMean, xlab="5-Min Interval",
-     ylab="Steps Per Interval")
+     ylab="Steps Per Interval", type="l")
 maxRow <- as.integer(maxInterval[1,1]) ## Number of max row
 print("The interval with maximum number of steps is:")
 maxRow
@@ -129,5 +130,6 @@ intervalMeansDay <- activeImputeDay %>%
 
 ## Produce lattice plot to compare activity on weekdays & weekends
 xyplot(stepsMeanDay ~ interval | dayStatus, data = intervalMeansDay, 
-       layout = c(1, 2), xlab = "Interval", ylab="Mean Steps Per Interval")
+       layout = c(1, 2), xlab = "Interval", ylab="Mean Steps Per Interval",
+     type="l")
 ```
